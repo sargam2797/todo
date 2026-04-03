@@ -1,0 +1,7 @@
+{
+  "stage": "review",
+  "approved": false,
+  "current_task": 4,
+  "project_name": "todo-api-fastapi",
+  "requirement": "build a simple todo API using FastAPI"
+}
