@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
 
 from todo_models import TodoCreate, TodoRead, TodoUpdate
 from todo_storage import store
@@ -32,6 +32,36 @@ def create_todo(payload: TodoCreate) -> TodoRead:
     response_model=List[TodoRead],
 )
 def list_todos() -> List[TodoRead]:
+    return store.list()
+
+
+@router.get(
+    "/search",
+    response_model=List[TodoRead],
+)
+def search_todos(
+    q: str = Query(
+        ...,
+        min_length=1,
+        description="Case-insensitive todo search query",
+    ),
+) -> List[TodoRead]:
+    """Return todos for the search endpoint contract.
+
+    Args:
+        q: Raw query text supplied by the client.
+
+    Returns:
+        The current todo list. Search filtering is implemented in Task 2.
+    """
+    normalized_query = q.strip()
+    if not normalized_query:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Query must contain at least one non-whitespace character",
+        )
+
+    # Task 1 only defines the endpoint contract; filtering logic is added in Task 2.
     return store.list()
 
 

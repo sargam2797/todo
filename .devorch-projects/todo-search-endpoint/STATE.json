@@ -1,0 +1,7 @@
+{
+  "stage": "review",
+  "approved": false,
+  "current_task": 0,
+  "project_name": "todo-search-endpoint",
+  "requirement": "Implement a Search endpoint for todos"
+}

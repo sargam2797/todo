@@ -7,7 +7,7 @@ description: Orchestrates a human-in-the-loop developer workflow using the /devo
 
 This skill registers the command family:
 
-- `/devorch "requirement"`
+- ``
 - `/devorch`
 - `/devorch approve`
 - `/devorch implement`
@@ -21,7 +21,7 @@ DevOrch uses **markdown state** as the source of truth and enforces **approval c
 ## State model (must follow)
 
 All orchestration state lives under:
-
+/devorch "requirement"
 - `.devorch-projects/{project-name}/`
 
 The directory contains:
