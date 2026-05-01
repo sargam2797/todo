@@ -20,6 +20,26 @@ class TodoStore:
         # Preserve insertion order (Python dict preserves order).
         return list(self._todos.values())
 
+    def search(self, query: str) -> List[TodoRead]:
+        """Return todos matching a case-insensitive substring query.
+
+        Args:
+            query: Normalized search text supplied by the API layer.
+
+        Returns:
+            Matching todos in deterministic insertion order.
+        """
+        normalized_query = query.lower()
+        matches: List[TodoRead] = []
+
+        for todo in self._todos.values():
+            title = todo.title.lower()
+            description = (todo.description or "").lower()
+            if normalized_query in title or normalized_query in description:
+                matches.append(todo)
+
+        return matches
+
     def get(self, todo_id: int) -> TodoRead:
         try:
             return self._todos[todo_id]

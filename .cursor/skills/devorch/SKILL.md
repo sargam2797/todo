@@ -7,7 +7,7 @@ description: Orchestrates a human-in-the-loop developer workflow using the /devo
 
 This skill registers the command family:
 
-- ``
+- `/devorch "requirement"`
 - `/devorch`
 - `/devorch approve`
 - `/devorch implement`
@@ -21,7 +21,7 @@ DevOrch uses **markdown state** as the source of truth and enforces **approval c
 ## State model (must follow)
 
 All orchestration state lives under:
-/devorch "requirement"
+
 - `.devorch-projects/{project-name}/`
 
 The directory contains:
@@ -155,10 +155,14 @@ Preconditions:
 
 Steps:
 1. Select the next unchecked task in `REQUIREMENT_ANALYSIS.md`.
-2. Explain planned changes (files to touch + approach) before editing any code.
-3. Implement exactly that one task in the repository root.
-4. Update `REQUIREMENT_ANALYSIS.md` progress and `STATE.json`.
-5. Set stage to `review`, set `approved=false`, and pause for user review.
+2. Explicitly read `.devorch/system_rules.md` before writing or editing any code.
+3. Explain planned changes (files to touch + approach) before editing any code.
+4. Implement exactly that one task in the repository root.
+5. Perform a mandatory **Self-Review** against every rule in `.devorch/system_rules.md` and fix any violations found.
+6. Run `pytest` before moving the task to review.
+   - If any tests fail, analyze the traceback, fix the code, and re-run `pytest` until all tests pass.
+7. Update `REQUIREMENT_ANALYSIS.md` progress and `STATE.json`.
+8. Set stage to `review`, set `approved=false`, and pause for user review.
 
 ---
 

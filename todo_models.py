@@ -1,4 +1,5 @@
 from typing import Optional
+from typing import List
 
 from pydantic import BaseModel, Field
 
@@ -21,4 +22,8 @@ class TodoRead(BaseModel):
     title: str
     description: Optional[str] = None
     completed: bool
+
+
+class TodoSearchResponse(BaseModel):
+    data: List[TodoRead]
 

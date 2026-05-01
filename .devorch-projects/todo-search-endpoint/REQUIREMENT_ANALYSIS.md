@@ -43,7 +43,7 @@ Original requirement:
 
 ## Task Breakdown Checklist
 
-- [ ] Task 1: Define search contract and route surface in API layer.
+- [x] Task 1: Define search contract and route surface in API layer.
   - Acceptance criteria:
     - Route path and HTTP method are finalized and documented in code.
     - Query parameter validation rules are explicit (e.g., min length / non-blank).
@@ -69,9 +69,15 @@ Original requirement:
 ## Progress
 
 - Stage: `review`
-- Current task index: `0`
+- Current task index: `1`
 - Notes:
   - Planning created for new project workflow `todo-search-endpoint`.
   - Planning approved via `/devorch approve`.
   - Task 1 implementation started: added `GET /todos/search` endpoint contract with `q` query validation.
-  - Task 1 is now awaiting human review via `/devorch approve`.
+  - Task 1 treated as approved based on explicit request to proceed with Task 2 implementation.
+  - Task 2 implementation started: added `TodoStore.search(query)` for case-insensitive substring filtering on `title` and `description`.
+  - Task 2 route wiring complete: `GET /todos/search` now delegates to `store.search(...)`.
+  - Task 2 refined from test feedback: `/todos/search` now returns `{"data": [...]}` on success and `404` with `"No todos match your search"` when no results are found.
+  - Added search-focused tests in `tests/test_todos.py` and resolved duplicate overriding test definitions.
+  - Verified with `pytest tests/test_todos.py` (`3 passed`).
+  - Task 2 is now awaiting human review via `/devorch approve`.

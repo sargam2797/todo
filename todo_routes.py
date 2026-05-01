@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException, Query, status
 
-from todo_models import TodoCreate, TodoRead, TodoUpdate
+from todo_models import TodoCreate, TodoRead, TodoSearchResponse, TodoUpdate
 from todo_storage import store
 
 
@@ -37,7 +37,7 @@ def list_todos() -> List[TodoRead]:
 
 @router.get(
     "/search",
-    response_model=List[TodoRead],
+    response_model=TodoSearchResponse,
 )
 def search_todos(
     q: str = Query(
@@ -45,14 +45,14 @@ def search_todos(
         min_length=1,
         description="Case-insensitive todo search query",
     ),
-) -> List[TodoRead]:
+) -> TodoSearchResponse:
     """Return todos for the search endpoint contract.
 
     Args:
         q: Raw query text supplied by the client.
 
     Returns:
-        The current todo list. Search filtering is implemented in Task 2.
+        TodoSearchResponse: Matching todos in a success envelope.
     """
     normalized_query = q.strip()
     if not normalized_query:
@@ -61,8 +61,14 @@ def search_todos(
             detail="Query must contain at least one non-whitespace character",
         )
 
-    # Task 1 only defines the endpoint contract; filtering logic is added in Task 2.
-    return store.list()
+    matches = store.search(normalized_query)
+    if not matches:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No todos match your search",
+        )
+
+    return TodoSearchResponse(data=matches)
 
 
 @router.get(
